@@ -120,6 +120,7 @@ namespace Lab5
             }
             return answer;
         }
+        
         public void Task4(int[,] matrix)
         {
             for (int i = 0; i < matrix.GetLength(0); i++)
@@ -136,7 +137,8 @@ namespace Lab5
                 }
                 
                 // среднее арифметическое после максимального элемента
-                int sum = 0, sizeSum = 0;
+                double sum = 0;
+                int sizeSum = 0;
                 for (int k = indexMax + 1; k < matrix.GetLength(1); k++)
                 {
                     if (matrix[i, k] > 0)
@@ -148,13 +150,13 @@ namespace Lab5
 
                 if (sizeSum == 0)
                     continue;
-                sum /= (int)sizeSum;
+                int average = (int)(sum / sizeSum);
                 
                 // замена всех отрицательных значений до максимального элемента
                 for (int l = 0; l < indexMax; l++)
                 {
                     if (matrix[i, l] < 0)
-                        matrix[i, l] = sum;
+                        matrix[i, l] = average;
                 }
             }
         }
@@ -479,3 +481,4 @@ namespace Lab5
         }
     }
 }
+
