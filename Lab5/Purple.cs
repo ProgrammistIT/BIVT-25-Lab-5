@@ -123,45 +123,54 @@ namespace Lab5
         
         public void Task4(int[,] matrix)
         {
-            if (matrix.GetLength(0) == 0 || matrix.GetLength(1) == 0)
-                return;
-            for (int i = 0; i < matrix.GetLength(0); i++)
+            int rows = matrix.GetLength(0);
+            int columns = matrix.GetLength(1);
+
+            for (int row = 0; row < rows; row++)
             {
-                // Находим первый (левый) максимальный элемент в строке
-                int indexMax = 0, max = int.MinValue;
-                for (int j = 0; j < matrix.GetLength(1); j++)
+                int mx = int.MinValue;
+                int cmx = -1;
+                for (int column = 0; column < columns; column++)
                 {
-                    if (max < matrix[i, j])
+                    if (matrix[row, column] > mx)
                     {
-                        max = matrix[i, j];
-                        indexMax = j;
-                    }
-                }
-                
-                // Вычисляем среднее арифметическое положительных элементов после максимального
-                double sum = 0;
-                int sizeSum = 0;
-                for (int k = indexMax + 1; k < matrix.GetLength(1); k++)
-                {
-                    if (matrix[i, k] > 0)
-                    {
-                        sum += matrix[i, k];
-                        sizeSum++;
+                        mx = matrix[row, column];
+                        cmx = column;
                     }
                 }
 
-                // Если после максимального нет положительных элементов, пропускаем строку
-                if (sizeSum == 0)
-                    continue;
-                
-                // Берем целую часть среднего
-                int average = (int)(sum / sizeSum);
-                
-                // Заменяем все отрицательные элементы перед максимальным на среднее
-                for (int l = 0; l < indexMax; l++)
+
+
+                bool isPositiveAfterMax = false;
+                for (int column = cmx + 1; column < columns; column++)
                 {
-                    if (matrix[i, l] < 0)
-                        matrix[i, l] = average;
+                    if (matrix[row, column] > 0) { 
+                        isPositiveAfterMax = true;
+                        break;
+                    }
+                }
+
+
+                if (isPositiveAfterMax) {
+                    int ln = columns - cmx - 1;
+                    int aver;
+
+                    if (ln != 0) { 
+                        int sum = 0;
+                        for (int column = cmx + 1; column < columns; column++)
+                        {
+                            sum += matrix[row, column];
+                        }
+                        aver = sum / ln;
+                    }
+                    else
+                        aver = 0;
+
+                    for (int column = 0; column < cmx; column++)
+                    {
+                        if (matrix[row, column] < 0)
+                            matrix[row, column] = aver;
+                    }
                 }
             }
         }
@@ -486,6 +495,7 @@ namespace Lab5
         }
     }
 }
+
 
 
 
