@@ -123,43 +123,46 @@ namespace Lab5
         
         public void Task4(int[,] matrix)
         {
-            int n  = matrix.GetLength(0);
-            int m = matrix.GetLength(1);
-            for (int i = 0; i < n; i++)
+            if (matrix.GetLength(0) == 0 || matrix.GetLength(1) == 0)
+                return;
+            for (int i = 0; i < matrix.GetLength(0); i++)
             {
-                int  maxRow = int.MinValue;
-                int maxIndex = 0;
-                for (int j = 0; j < m; j++)
+                // Находим первый (левый) максимальный элемент в строке
+                int indexMax = 0, max = int.MinValue;
+                for (int j = 0; j < matrix.GetLength(1); j++)
                 {
-                    if (maxRow < matrix[i, j])
+                    if (max < matrix[i, j])
                     {
-                        maxRow = matrix[i, j];
-                        maxIndex = j;
+                        max = matrix[i, j];
+                        indexMax = j;
                     }
                 }
-                int posSumm = 0;
-                int posCounter = 0;
-                for (int k = maxIndex + 1; k < m; k++)
+                
+                // Вычисляем среднее арифметическое положительных элементов после максимального
+                double sum = 0;
+                int sizeSum = 0;
+                for (int k = indexMax + 1; k < matrix.GetLength(1); k++)
                 {
                     if (matrix[i, k] > 0)
                     {
-                        posSumm += matrix[i, k];
-                        posCounter++;
+                        sum += matrix[i, k];
+                        sizeSum++;
                     }
                 }
 
-                if (posCounter != 0)
+                // Если после максимального нет положительных элементов, пропускаем строку
+                if (sizeSum == 0)
+                    continue;
+                
+                // Берем целую часть среднего
+                int average = (int)(sum / sizeSum);
+                
+                // Заменяем все отрицательные элементы перед максимальным на среднее
+                for (int l = 0; l < indexMax; l++)
                 {
-                    int posAvg = posSumm / posCounter;
-                    for (int k = 0; k < maxIndex; k++)
-                    {
-                        if (matrix[i, k] < 0)
-                        {
-                            matrix[i, k] = posAvg;
-                        }
-                    }
+                    if (matrix[i, l] < 0)
+                        matrix[i, l] = average;
                 }
-                else continue;
             }
         }
 
@@ -483,5 +486,6 @@ namespace Lab5
         }
     }
 }
+
 
 
