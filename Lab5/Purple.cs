@@ -123,41 +123,43 @@ namespace Lab5
         
         public void Task4(int[,] matrix)
         {
-            for (int i = 0; i < matrix.GetLength(0); i++)
+            int n  = matrix.GetLength(0);
+            int m = matrix.GetLength(1);
+            for (int i = 0; i < n; i++)
             {
-                // нахождение максимального элемента
-                int indexMax = 0, max = int.MinValue;
-                for (int j = 0; j < matrix.GetLength(1); j++)
+                int  maxRow = int.MinValue;
+                int maxIndex = 0;
+                for (int j = 0; j < m; j++)
                 {
-                    if (max < matrix[i, j])
+                    if (maxRow < matrix[i, j])
                     {
-                        max = matrix[i, j];
-                        indexMax = j;
+                        maxRow = matrix[i, j];
+                        maxIndex = j;
                     }
                 }
-                
-                // среднее арифметическое после максимального элемента
-                double sum = 0;
-                int sizeSum = 0;
-                for (int k = indexMax + 1; k < matrix.GetLength(1); k++)
+                int posSumm = 0;
+                int posCounter = 0;
+                for (int k = maxIndex + 1; k < m; k++)
                 {
                     if (matrix[i, k] > 0)
                     {
-                        sum += matrix[i, k];
-                        sizeSum++;
+                        posSumm += matrix[i, k];
+                        posCounter++;
                     }
                 }
 
-                if (sizeSum == 0)
-                    continue;
-                int average = (int)(sum / sizeSum);
-                
-                // замена всех отрицательных значений до максимального элемента
-                for (int l = 0; l < indexMax; l++)
+                if (posCounter != 0)
                 {
-                    if (matrix[i, l] < 0)
-                        matrix[i, l] = average;
+                    int posAvg = posSumm / posCounter;
+                    for (int k = 0; k < maxIndex; k++)
+                    {
+                        if (matrix[i, k] < 0)
+                        {
+                            matrix[i, k] = posAvg;
+                        }
+                    }
                 }
+                else continue;
             }
         }
 
@@ -481,4 +483,5 @@ namespace Lab5
         }
     }
 }
+
 
